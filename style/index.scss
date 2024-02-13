@@ -1,0 +1,91 @@
+:root {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  color: white;
+}
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  background-color: #131313;
+}
+main {
+  max-width: 1200px;
+  margin: auto;
+}
+.tab-container {
+  list-style-type: none;
+
+  &-vertical {
+    @extend .tab-container;
+    flex-direction: column;
+  }
+
+  &-wide {
+    @extend .tab-container;
+    .tab {
+      //flex-grow: 2;
+      flex-basis: 100%;
+    }
+  }
+
+  @for $tabs from 1 through 12 {
+    &.tabs-flex-auto-#{$tabs} {
+      display: flex;
+      flex-wrap: wrap;
+      .tab {
+        min-width: 0;
+        flex: 1 0 calc(100% / ($tabs));
+        word-wrap: break-word;
+      }
+    }
+
+    &.tabs-flex-grid-#{$tabs} {
+      display: flex;
+      flex-wrap: wrap;
+      .tab {
+        min-width: 0;
+        flex: 0 0 calc(100% / ($tabs));
+        word-wrap: break-word;
+      }
+    }
+
+    &.tabs-grid-#{$tabs} {
+      display: grid;
+      margin: auto;
+      width: 100%;
+      $w-max: 100%;
+      max-width: $w-max;
+      $gap: 1rem;
+      $tabs-count: #{$tabs};
+      //gap: $gap;
+      $gap-count: $tabs - 1;
+      $total-gap-width: calc($gap-count * $gap);
+      $grid-item-max-width: calc((100% - $total-gap-width) / $tabs-count);
+      $grid-item-min-width: 100px;
+      //grid-column-gap: $gap;
+      //$grid-item-min-width: calc(($w-max - $total-gap-width) / $tabs-count);
+
+      grid-template-columns: repeat(
+        auto-fill,
+        minmax(max($grid-item-min-width, $grid-item-max-width), 1fr)
+      );
+      //grid-template-columns: repeat(auto-fill, minmax($grid-item-max-width, 1fr));
+      .tab {
+        overflow: hidden;
+        word-wrap: break-word;
+      }
+    }
+  }
+}
+.tab {
+  background-color: #333;
+  text-align: center;
+  padding: 1rem;
+}
